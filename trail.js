@@ -30,7 +30,7 @@ let newIceB;
 function preload() {
     // logo png
    // logo = loadImage();
-   logo=loadImage('Finished.png')
+   logo=loadImage('assets/Finished.png')
 }
 
 function setup() {
@@ -103,7 +103,7 @@ function resetSketch(){
     // screen image
     loseScreen = loadImage('assets/lose.png');
     winScreen = loadImage('assets/dancing.gif');
-    bg = loadImage('background.png');
+    bg = loadImage('assets/background.png');
 
 }
  
