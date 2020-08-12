@@ -177,7 +177,7 @@ function draw() {
         bear.position.y = py;
         
         // controls
-        if (keyIsDown(LEFT_ARROW)) {
+        if (keyIsDown(65)) {
             px -= 3;
         //image(rpolarBear,this.x,py,this.r);
         bear.changeImage('backward');
@@ -185,11 +185,11 @@ function draw() {
         else{
           //  bear.changeImage('left')
         }
-        //if(!(keyIsDown(LEFT_ARROW))){
+        //if(!(keyIsDown(65))){
            // bear.changeImage('left');
         // }
        
-        if (keyIsDown(RIGHT_ARROW)) {
+        if (keyIsDown(68)) {
             px += 3;
             bear.changeImage('forward');
         }
@@ -197,27 +197,27 @@ function draw() {
            //bear.changeImage('normal');
         }
        
-        if (!(keyIsDown(RIGHT_ARROW)||keyIsDown(LEFT_ARROW))){
+        if (!(keyIsDown(68)||keyIsDown(65))){
             bear.changeImage('normal');
         }
             //bear.changeAnimation('normal');
        // }
-        if (keyIsDown(UP_ARROW)) {
+        if (keyIsDown(87)) {
             jump = true;
             
         } 
         else {
             jump = false;
         } 
-        if (keyIsDown(UP_ARROW) && bear.collide(ice)){
+        if (keyIsDown(87) && bear.collide(ice)){
             jump=true;
             jumpWatch=0;
         }
-        if(keyIsDown(UP_ARROW) && bear.collide(iceB)){
+        if(keyIsDown(87) && bear.collide(iceB)){
             jump = true;
             jumpWatch = 0;
         }
-        if(keyIsDown(UP_ARROW) && bear.collide(iceT)){
+        if(keyIsDown(87) && bear.collide(iceT)){
             jump = true;
             jumpWatch = 0;
         }
@@ -497,7 +497,7 @@ function draw() {
         text("YOUR OBJECTIVE IS TO GET TO YOUR", 185, 150);
         text("LOST CUB WHILE JUMPING ON ICE PLATFORMS ", 95, 220);
         text("BE CAREFUL FOR THE ICE MELTS BENEATH YOUR FEET", 20, 280)
-        text("Up ARROW = JUMP, LEFT/RIGHT ARROW = LEFT/RIGHT", 20, 350);
+        text("W = JUMP, A/D = LEFT/RIGHT", 250, 350);
         fill('blue');
         rect(200,400,250,75,40);
         fill('black');
@@ -550,9 +550,9 @@ function draw() {
         background(loseScreen);
         fill(0, 120, 255);
         textSize(60);
-        text('GAMEOVER!', 300, 100);
+        text('GAMEOVER!', 320, 100);
         textSize(25);
-        text("Don't give up! Press down arrow to retry!", 300, 200)    
+        text("Don't give up! Press S or W to retry!", 300, 200)    
         
         iceP();
     
@@ -562,7 +562,7 @@ function draw() {
         //ice.removed=false;
          
          
-         if (keyIsDown(UP_ARROW)||keyIsDown(DOWN_ARROW)) {
+         if (keyIsDown(87)||keyIsDown(83)) {
             state = 3;
             for(let i=0; i<6; i++){
                 iceT[i].removed = true//mouseIsPressed;
@@ -591,10 +591,10 @@ function draw() {
         background(winScreen);
         fill(0, 120, 255);
         textSize(60);
-        text('You WIN!', 300, 100);
+        text('You WIN!', 350, 100);
         textSize(20);
-        text("Press down arrow to play again!", 300, 200); 
-        if (keyIsDown(DOWN_ARROW)||keyIsDown(UP_ARROW)) {
+        text("Press S or W to play again!", 380, 200); 
+        if (keyIsDown(83)||keyIsDown(87)) {
             state = 1;
             // reset hearts back to 3
 
