@@ -30,6 +30,7 @@ let newIceB;
 function preload() {
     // logo png
    // logo = loadImage();
+   logo=loadImage('assets/Finished.png')
 }
 
 function setup() {
@@ -85,7 +86,7 @@ function resetSketch(){
     ground.addImage(loadImage('assets/ground.png')); // replace with water 
 
     // baby cub sprite
-    baby = createSprite(850, 223, 20, 20);
+    baby = createSprite(985, 278, 20, 20);
 
     baby.addImage(loadImage('assets/prime.png'));
     
@@ -119,8 +120,8 @@ function draw() {
         iceT[1].position.y=173;
         iceT[2].position.x=365;
         iceT[2].position.y=336;
-        iceT[3].position.x=912;
-        iceT[3].position.y=113;
+        iceT[3].position.x=450;
+        iceT[3].position.y=129;
         iceT[4].position.x=669;
         iceT[4].position.y=363;
         iceT[5].position.x=192;
@@ -133,14 +134,14 @@ function draw() {
         iceD[7].position.y=183;
         iceD[8].position.x=365;
         iceD[8].position.y=346;
-        iceD[9].position.x=912;
-        iceD[9].position.y=123;
+        iceD[9].position.x=450;
+        iceD[9].position.y=139;
         iceD[10].position.x=669;
         iceD[10].position.y=373;
         iceD[11].position.x=192;
         iceD[11].position.y=412;
 
-        iceB[0].position.x=331;
+        iceB[0].position.x=281;
         iceB[0].position.y=156;
         iceB[1].position.x=892;
         iceB[1].position.y=119;
@@ -154,7 +155,7 @@ function draw() {
         iceB[5].position.y=246;
 
         //bottom
-        iceD[0].position.x=331;
+        iceD[0].position.x=281;
         iceD[0].position.y=166;
         iceD[1].position.x=892;
         iceD[1].position.y=129;
@@ -333,7 +334,7 @@ function draw() {
         }
     }
     function respawn() {
-        px = 120;
+        px = 150;
         py = 25;
 
     }
@@ -372,17 +373,17 @@ function draw() {
             }
     }
     function meltingIce(){  
-            if(py==ice.position.y-10){
-                ice.changeImage('melty')
-               ice.animation.frameDelay=20;
-            }
+            // if(py==ice.position.y-10){
+            //     ice.changeImage('melty')
+            //    ice.animation.frameDelay=20;
+            // }
            
-            if(ice.animation.getFrame()===11){
-                ice.removed=true;
-                ice.position.x=5000;
-                ice.position.y=5000;
+            // if(ice.animation.getFrame()===11){
+            //     ice.removed=true;
+            //     ice.position.x=5000;
+            //     ice.position.y=5000;
              
-            }
+            // }
             if(state==4 &&(ice.removed=true)){
                 ice.changeImage('normal')
                 //ice.removed=false;
@@ -403,19 +404,7 @@ function draw() {
               }
               if(state==4){
                 iceT[i].changeAnimation('normal');
-               // iceT[i].removed=false;
-                // iceT[0].position.x=245;
-                // iceT[0].position.y=271;
-                // iceT[1].position.x=618;
-                // iceT[1].position.y=173;
-                // iceT[2].position.x=365;
-                // iceT[2].position.y=336;
-                // iceT[3].position.x=912;
-                // iceT[3].position.y=113;
-                // iceT[4].position.x=669;
-                // iceT[4].position.y=363;
-                // iceT[5].position.x=192;
-                // iceT[5].position.y=402;
+              
               }
               
              }
@@ -432,20 +421,7 @@ function draw() {
                 }
                 if(state==4){
                     iceB[i].changeAnimation('normal');
-                    //iceB[i].removed=false;
-                    // iceB[0].position.x=331;
-                    // iceB[0].position.y=156;
-                    // iceB[1].position.x=892;
-                    // iceB[1].position.y=119;
-                    // iceB[2].position.x=739;
-                    // iceB[2].position.y=198;
-                    // iceB[3].position.x=488;
-                    // iceB[3].position.y=282;
-                    // iceB[4].position.x=988;
-                    // iceB[4].position.y=297;
-                    // iceB[5].position.x=846;
-                    // iceB[5].position.y=246;
-                }
+                             }
             }
         
              for(let i=0; i<12; i++){
@@ -462,31 +438,8 @@ function draw() {
               
                 if(state==4){
                     iceD[i].changeImage('normal');
-                   // iceD[i].removed=false;
-                    // iceD[0].position.x=331;
-                    // iceD[0].position.y=166;
-                    // iceD[1].position.x=892;
-                    // iceD[1].position.y=129;
-                    // iceD[2].position.x=739;
-                    // iceD[2].position.y=208;
-                    // iceD[3].position.x=488;
-                    // iceD[3].position.y=292;
-                    // iceD[4].position.x=988;
-                    // iceD[4].position.y=307;
-                    // iceD[5].position.x=846;
-                    // iceD[5].position.y=256;
-                    // iceD[6].position.x=245;
-                    // iceD[6].position.y=281;
-                    // iceD[7].position.x=618;
-                    // iceD[7].position.y=183;
-                    // iceD[8].position.x=365;
-                    // iceD[8].position.y=346;
-                    // iceD[9].position.x=912;
-                    // iceD[9].position.y=123;
-                    // iceD[10].position.x=669;
-                    // iceD[10].position.y=373;
-                    // iceD[11].position.x=192;
-                    // iceD[11].position.y=412;
+               
+                 
                 }
                 
              }
@@ -494,37 +447,42 @@ function draw() {
     }
     function debug(){
         bear.debug = false// mouseIsPressed;
-        ice.debug = true//mouseIsPressed;
+        ice.debug = false//mouseIsPressed;
         for(let i=0; i<6; i++){
-        iceT[i].debug = true//mouseIsPressed;
+        iceT[i].debug = false//mouseIsPressed;
         }
         for(let i=0; i<6; i++){
-          iceB[i].debug = true//mouseIsPressed;
+          iceB[i].debug = false//mouseIsPressed;
           }
           for(let i=0; i<12; i++){
-              iceD[i].debug = true//mouseIsPressed;
+              iceD[i].debug = false//mouseIsPressed;
                       }
       }
  //text('hmm',mouseX,mouseY);
     if (state == 1) {
+      
         background(bg);
         textFont('Georgia');
-        //background();
+        image(logo,420,150,175,100);
+        textSize(15)
+        text('AN',500,140)
+        text('PRODUCTION',460,260);
+            //background();
         // title button
         textSize(50);
         fill('blue');
-        text('Polar Meltdown', 350, 100);
+        text('Polar Meltdown', 325, 100);
         // play button - go to state 3
         fill('red');
-        rect(400, 300, 250, 75, 40);
+        rect(380, 300, 250, 75, 40);
         fill('black');
-        text('PLAY', 460, 350);
+        text('PLAY', 440, 350);
         // how to play button - go to help state 
         fill('blue');
-        rect(400, 420, 250, 75, 40);
+        rect(380, 420, 250, 75, 40);
         textSize(30);
         fill('black');
-        text('HOW TO PLAY', 430, 470);
+        text('HOW TO PLAY', 410, 470);
         // excursion button
        // image(logo, 400, 500, 50, 25, 40);   
     }
@@ -535,25 +493,30 @@ function draw() {
         textSize(35);
         textFont('Georgia');
         fill('black');
-        text("Your objective is to find", 250, 250);
-        text("your lost cub while jumping on", 250, 300);
-        text("melting ice platforms", 250, 350)
-        text("Up arrow = jump, left/right arrow = move", 250, 400);
+        text("YOUR OBJECTIVE IS TO GET TO YOUR", 185, 150);
+        text("LOST CUB WHILE JUMPING ON ICE PLATFORMS ", 95, 220);
+        text("BE CAREFUL FOR THE ICE MELTS BENEATH YOUR FEET", 20, 280)
+        text("Up ARROW = JUMP, LEFT/RIGHT ARROW = LEFT/RIGHT", 20, 350);
         fill('blue');
-        rect(200,500,250,75,40);
+        rect(200,400,250,75,40);
         fill('black');
-        text('PLAY', 290, 550)
+        text('PLAY', 280, 450)
         fill('white');
-        rect(550,500,250,75,40);
+        rect(550,400,250,75,40);
         fill('black');
-        text('BACK',640,550);
+        text('BACK',630,450);
     }
     // test stage
     if (state == 3) {
     fill(0, 0, 25);
     background(bg);
     fill(255,255,255);
-    rect(900,50,100,50);
+    rect(862,18,100,50,20);
+    fill(0)
+    textSize(35);
+    textFont('Georgia');
+    text('EXIT',870,55);
+
    // image(backScreen,0,0,1000,600);
     gravity();
        
@@ -586,7 +549,7 @@ function draw() {
         background(loseScreen);
         fill(0, 120, 255);
         textSize(60);
-        text('Gameover!', 300, 100);
+        text('GAMEOVER!', 300, 100);
         textSize(25);
         text("Don't give up! Press down arrow to retry!", 300, 200)    
         
@@ -635,10 +598,21 @@ function draw() {
             // reset hearts back to 3
 
             heart = 3;
-            heart1.visible = false;
-            heart2.visible = false;
-            heart3.visible = false;
+            heart1.visible = true;
+            heart2.visible = true;
+            heart3.visible = true;
         }  
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
     }
    // console.log((ice.position.x),(ice.position.y));
     // if(state ==6){
@@ -654,22 +628,73 @@ function draw() {
 
 
 function mouseClicked() {
-    if (state==1 && mouseX>400 && mouseX<650 && mouseY>300 && mouseY<375) {
+    if (state==1 && mouseX>380 && mouseX<670 && mouseY>300 && mouseY<375) {
        state=3;
+      
+     
+       heart = 3;
+       heart1.visible = true;
+       heart2.visible = true;
+       heart3.visible = true;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+             resetIce();
+             px=120;
+             py=25;
     }
-    if(state==1 && mouseX>400 && mouseX<650&&mouseY>420&&mouseY<495){
+    if(state==1 && mouseX>380 && mouseX<670&&mouseY>420&&mouseY<495){
         state=2;
     }
-    if(state==2&& mouseX>200 && mouseX<450&&mouseY>500&&mouseY<575){
+    if(state==2&& mouseX>200 && mouseX<450&&mouseY>400&&mouseY<475){
         state=3;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        px=120;
+        py=25;
     }
-    if(state==2&& mouseX>550 && mouseX<800&&mouseY>500&&mouseY<575){
+    if(state==2&& mouseX>550 && mouseX<800&&mouseY>400&&mouseY<475){
         state=1;
     }
     if (state == 4) {
        state == 3;        
     }
-  
+    if(state==3&&mouseX>862&&mouseX<962&&mouseY>18&&mouseY<68){
+        state=1;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
 }
 
 function resetIce(){
