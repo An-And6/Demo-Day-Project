@@ -390,6 +390,7 @@ function draw() {
                 //ice.removed=false;
                 //ice.position.x=150;
                // ice.position.y=200;
+               
             }
             
                  for(let i= 0; i<6; i++){
@@ -398,6 +399,7 @@ function draw() {
                   iceT[i].animation.frameDelay=20;
               }
               if(iceT[i].animation.getFrame()===11){ 
+                  iceT[i].animation.stop();
                   iceT[i].removed=true;
                   iceT[i].position.x=5000;
                   iceT[i].position.y=5000;
@@ -415,6 +417,7 @@ function draw() {
                      iceB[i].animation.frameDelay=20;
              }
                 if(iceB[i].animation.getFrame()===11){    
+                   // iceB[i].animation.stop();
                   iceB[i].removed=true;
                   iceB[i].position.x=5000;
                   iceB[i].position.y=5000;
@@ -430,7 +433,8 @@ function draw() {
                     iceD[i].changeImage('melty');
                     iceD[i].animation.frameDelay=20;
                  }
-                if(iceD[i].animation.getFrame()===11){    
+                if(iceD[i].animation.getFrame()===11){  
+                  //  iceD[i].animation.stop();  
                     iceD[i].removed=true;
                     iceD[i].position.x=5000;
                     iceD[i].position.y=5000;
