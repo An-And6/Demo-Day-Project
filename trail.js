@@ -13,7 +13,7 @@ let maxHeight = 0; // height of sky
 let jumpCounter = 0; // keeps track of how much we are jumping
 let jumpWatch=0; //how many times jump is true
 let barrier; // stops character from falling through stuff
-let state = 1;
+let state = 6;
 let dy;
 let iceS;
 px = 150;
@@ -34,8 +34,9 @@ function preload() {
 }
 
 function setup() {
-   const canvas= createCanvas(1000, 600);
-   canvas.parent('gameImage');
+  // const canvas=
+    createCanvas(1000, 600);
+   //canvas.parent('gameImage');
     resetSketch();
     noStroke();
              
@@ -91,7 +92,9 @@ function resetSketch(){
 
     baby.addImage(loadImage('assets/prime.png'));
     
-    
+    //next level sprite
+    next=createSprite(985,278);
+    next.addImage(loadImage('assets/next.png'));
    
     // heart sprites
     heart1 = createSprite(25, 25, 20, 20);
@@ -107,22 +110,44 @@ function resetSketch(){
     bg = loadImage('assets/background.png');
 
 }
- 
+function respawn() {
+    px = 150;
+    py = 25;
+
+}
 
                 //DRAW
 function draw() {
     //console.log(bear.collide(ice));
     // start screen
+    console.log(state)
+    function world(){
+        if(state==3||state==6||state==8||state==10||state==12||state==14||state==16||state==18||state==20){
+            baby.removed=true;
+            baby.visible=false;
+        }
+        else if (state==22){
+            baby.removed=false;
+            baby.visible=true;
+            next.removed=true;
+        }
+        else{
+            baby.removed=true;
+            baby.visible=false;
+            next.removed=false;
+        }
+    };
+    world();
     function iceP() {
 
         iceT[0].position.x=245;
         iceT[0].position.y=271;
-        iceT[1].position.x=618;
+        iceT[1].position.x=600;
         iceT[1].position.y=173;
         iceT[2].position.x=365;
         iceT[2].position.y=336;
         iceT[3].position.x=450;
-        iceT[3].position.y=129;
+        iceT[3].position.y=229;
         iceT[4].position.x=669;
         iceT[4].position.y=363;
         iceT[5].position.x=192;
@@ -131,12 +156,12 @@ function draw() {
         //top 
         iceD[6].position.x=245;
         iceD[6].position.y=281;
-        iceD[7].position.x=618;
+        iceD[7].position.x=600;
         iceD[7].position.y=183;
         iceD[8].position.x=365;
         iceD[8].position.y=346;
         iceD[9].position.x=450;
-        iceD[9].position.y=139;
+        iceD[9].position.y=239;
         iceD[10].position.x=669;
         iceD[10].position.y=373;
         iceD[11].position.x=192;
@@ -149,7 +174,7 @@ function draw() {
         iceB[2].position.x=739;
         iceB[2].position.y=198;
         iceB[3].position.x=488;
-        iceB[3].position.y=282;
+        iceB[3].position.y=382;
         iceB[4].position.x=988;
         iceB[4].position.y=297;
         iceB[5].position.x=846;
@@ -163,7 +188,7 @@ function draw() {
         iceD[2].position.x=739;
         iceD[2].position.y=208;
         iceD[3].position.x=488;
-        iceD[3].position.y=292;
+        iceD[3].position.y=392;
         iceD[4].position.x=988;
         iceD[4].position.y=307;
         iceD[5].position.x=846;
@@ -222,7 +247,7 @@ function draw() {
             jumpWatch = 0;
         }
 
-        if(state==1||state==2||state==3||state==4){
+        if(state==1||state==2||state==3||state==4||state==6||state==8||state==10||state==12||state==14||state==16||state==18||state==20||state==22){
             py+=4;
         }
        
@@ -241,8 +266,25 @@ function draw() {
             life();
             
         }
-        if (bear.collide(baby)) {
-            state = 5;
+        if (bear.collide(next)) {
+            state = 6;
+            heart = 3;
+       heart1.visible = true;
+       heart2.visible = true;
+       heart3.visible = true;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+             resetIce();
+             px=150;
+             py=25;
+             bear.visible=false;
         }
         if(bear.collide(iceT)){
           //  py -= barrier;
@@ -448,7 +490,7 @@ function draw() {
                 }
                 
              }
-            console.log(ice.removed);
+          //  console.log(ice.removed);
     }
     function debug(){
         bear.debug = false// mouseIsPressed;
@@ -462,6 +504,7 @@ function draw() {
           for(let i=0; i<12; i++){
               iceD[i].debug = false//mouseIsPressed;
                       }
+        next.debug=true;
       }
  //text('hmm',mouseX,mouseY);
     if (state == 1) {
@@ -503,13 +546,13 @@ function draw() {
         text("BE CAREFUL FOR THE ICE MELTS BENEATH YOUR FEET", 20, 280)
         text("W = JUMP, A/D = LEFT/RIGHT", 250, 350);
         fill('blue');
-        rect(200,400,250,75,40);
+        rect(200,500,250,75,40);
         fill('black');
-        text('PLAY', 280, 450)
+        text('PLAY', 280, 550)
         fill('white');
-        rect(550,400,250,75,40);
+        rect(550,500,250,75,40);
         fill('black');
-        text('BACK',630,450);
+        text('BACK',630,550);
     }
     // test stage
     if (state == 3) {
@@ -521,7 +564,17 @@ function draw() {
     textSize(35);
     textFont('Georgia');
     text('EXIT',870,55);
+    textSize(50)
+    textFont('Georgia');
+    text('Level: 1',300,55);
 
+    fill(255,255,255);
+    rect(578,18,180,50,20);
+    fill(0)
+    textSize(30);
+    text('Level Select',590,55)
+   
+   
    // image(backScreen,0,0,1000,600);
     gravity();
        
@@ -545,7 +598,7 @@ function draw() {
 //debug();
  // iceB[i].debug = true//mouseIsPressed
  // ground.debug = true// mouseIsPressed;
-
+        debug();
  
   drawSprites();    
     }
@@ -619,24 +672,472 @@ function draw() {
         resetIce();
         respawn();
     }
-   // console.log((ice.position.x),(ice.position.y));
-    // if(state ==6){
-    //     fill(0, 0, 25);
-    //     background(bg);
-
-    //   drawSprites();    
-    // }
-}
-
-
-
-
-
-function mouseClicked() {
-    if (state==1 && mouseX>380 && mouseX<670 && mouseY>300 && mouseY<375) {
-       state=3;
+    if(state ==6){
+        bear.visible=true;
+        fill(0, 0, 25);
+        background(bg);
+        fill(255,255,255);
+        rect(862,18,100,50,20);
+        fill(0)
+        textSize(35);
+        textFont('Georgia');
+        text('EXIT',870,55);
+        textSize(50)
+        textFont('Georgia');
+        text('Level: 2',300,55);
+    
+        fill(255,255,255);
+        rect(578,18,180,50,20);
+        fill(0)
+        textSize(30);
+        text('Level Select',590,55)
+  // px==150;
+  // py==180;
+        gravity();
       
+   bearP();
+   jumpObserver();
+   
+   collision1();
+   function collision1() {
+       if(bear.collide(ice)){
+           py -= barrier;
+         //  ice.changeAnimation('melty')
+       }
+       if(bear.collide(ground)){
+           py -= 6;
+           heart -= 1;
+           respawn();
+           life1();
+           
+       }
+       if (bear.collide(next)) {
+           state = 8;
+           heart = 3;
+       heart1.visible = true;
+       heart2.visible = true;
+       heart3.visible = true;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+             resetIce();
+             px=150;
+             py=25;
+       }
+       if(bear.collide(iceT)){
+         //  py -= barrier;
+           //py+=6;
+       }
+       if(bear.collide(iceB)){
+         //  py -= barrier;
+           //py+=6;
+       }
+       // collision for iceD
+       if (bear.collide(iceD)) {
+          py += 20;
+       }
+
+       
+
+       
+   }
+   function life1() {
+       if (heart == 0) {
+           heart1.visible = false;
+           // respawn
+           // state = losing state
+           state = 7;
+       }   
+       else if (heart == 2) {
+           heart3.visible = false;
+           for(let i=0; i<6; i++){
+               iceT[i].removed = true//mouseIsPressed;
+               }
+               for(let i=0; i<6; i++){
+                 iceB[i].removed = true//mouseIsPressed;
+                 }
+                 for(let i=0; i<12; i++){
+                     iceD[i].removed = true//mouseIsPressed;
+                 }
+           resetIce()
+       }
+       else if (heart == 1) {
+           heart2.visible = false;
+           for(let i=0; i<6; i++){
+               iceT[i].removed = true//mouseIsPressed;
+               }
+               for(let i=0; i<6; i++){
+                 iceB[i].removed = true//mouseIsPressed;
+                 }
+                 for(let i=0; i<12; i++){
+                     iceD[i].removed = true//mouseIsPressed;
+                 }
+           resetIce();
+       }
+   }
+   function iceP1() {
+
+       iceT[0].position.x=221;
+       iceT[0].position.y=361;
+       iceT[1].position.x=844;
+       iceT[1].position.y=372;
+       iceT[2].position.x=677;
+       iceT[2].position.y=405;
+       iceT[3].position.x=885;
+       iceT[3].position.y=379;
+       iceT[4].position.x=688;
+       iceT[4].position.y=434;
+       iceT[5].position.x=912;
+       iceT[5].position.y=256;
+
+       //top 
+       iceD[6].position.x=221;
+       iceD[6].position.y=371;
+       iceD[7].position.x=844;
+       iceD[7].position.y=382;
+       iceD[8].position.x=677;
+       iceD[8].position.y=415;
+       iceD[9].position.x=885;
+       iceD[9].position.y=389;
+       iceD[10].position.x=688;
+       iceD[10].position.y=444;
+       iceD[11].position.x=912;
+       iceD[11].position.y=266;
+
+       iceB[0].position.x=204;
+       iceB[0].position.y=480;
+       iceB[1].position.x=665;
+       iceB[1].position.y=431;
+       iceB[2].position.x=802;
+       iceB[2].position.y=318;
+       iceB[3].position.x=781;
+       iceB[3].position.y=308;
+       iceB[4].position.x=334;
+       iceB[4].position.y=288;
+       iceB[5].position.x=449;
+       iceB[5].position.y=526;
+
+       //bottom
+       iceD[0].position.x=204;
+       iceD[0].position.y=490;
+       iceD[1].position.x=665;
+       iceD[1].position.y=441;
+       iceD[2].position.x=802;
+       iceD[2].position.y=328;
+       iceD[3].position.x=781;
+       iceD[3].position.y=318;
+       iceD[4].position.x=334;
+       iceD[4].position.y=298;
+       iceD[5].position.x=449;
+       iceD[5].position.y=536;
+      
+
+   }
+   iceP1();
+   meltingIce();  
+   drawSprites();    
+   // }
+}
+    if(state==7){
+       background(loseScreen);
+       fill(0, 120, 255);
+       textSize(60);
+       text('GAMEOVER!', 320, 100);
+       textSize(25);
+       text("Don't give up! Press S or W to retry!", 300, 200)    
+       
+       iceP();
+   
+       ice.position.x=150;
+       ice.position.y=200;
+  //    ice.animation.looping=true;
+       //ice.removed=false;
+        
+        
+        if (keyIsDown(87)||keyIsDown(83)) {
+           state = 6;
+           for(let i=0; i<6; i++){
+               iceT[i].removed = true//mouseIsPressed;
+               }
+               for(let i=0; i<6; i++){
+                 iceB[i].removed = true//mouseIsPressed;
+                 }
+                 for(let i=0; i<12; i++){
+                     iceD[i].removed = true//mouseIsPressed;
+                 }
+      
+           // reset hearts back to 3
+           heart = 3;
+           heart1.visible = true;
+           heart2.visible = true;
+           heart3.visible = true;
+           
+           resetIce();
+           
+           //state = 3;
+           
+           
+       }  
+    }
+    if(state==8){
+        fill(0, 0, 25);
+        background(bg);
+        fill(255,255,255);
+        rect(862,18,100,50,20);
+        fill(0)
+        textSize(35);
+        textFont('Georgia');
+        text('EXIT',870,55);
+        textSize(50)
+        textFont('Georgia');
+        text('Level: 3',300,55);
+    
+        fill(255,255,255);
+        rect(578,18,180,50,20);
+        fill(0)
+        textSize(30);
+        text('Level Select',590,55)
+// px==150;
+// py==180;
+     gravity();
+   
+    bearP();
+    jumpObserver();
+
+    collision2();
+    function collision2() {
+    if(bear.collide(ice)){
+        py -= barrier;
+      //  ice.changeAnimation('melty')
+    }
+    if(bear.collide(ground)){
+        py -= 6;
+        heart -= 1;
+        respawn();
+        life2();
+        
+    }
+    if (bear.collide(next)) {
+        state = 10;
+        heart = 3;
+       heart1.visible = true;
+       heart2.visible = true;
+       heart3.visible = true;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+             resetIce();
+             px=150;
+             py=25;
+    }
+    if(bear.collide(iceT)){
+      //  py -= barrier;
+        //py+=6;
+    }
+    if(bear.collide(iceB)){
+      //  py -= barrier;
+        //py+=6;
+    }
+    // collision for iceD
+    if (bear.collide(iceD)) {
+       py += 20;
+    }
+
+    
+
+    
+}
+    function life2() {
+    if (heart == 0) {
+        heart1.visible = false;
+        // respawn
+        // state = losing state
+        state = 9;
+    }   
+    else if (heart == 2) {
+        heart3.visible = false;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce()
+    }
+    else if (heart == 1) {
+        heart2.visible = false;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+    }
+}
+    function iceP2() {
+
+    iceT[0].position.x=562;
+    iceT[0].position.y=261;
+    iceT[1].position.x=357;
+    iceT[1].position.y=205;
+    iceT[2].position.x=376;
+    iceT[2].position.y=281;
+    iceT[3].position.x=210;
+    iceT[3].position.y=528;
+    iceT[4].position.x=856;
+    iceT[4].position.y=442;
+    iceT[5].position.x=296;
+    iceT[5].position.y=440;
+
+    //top 
+    iceD[6].position.x=562;
+    iceD[6].position.y=271;
+    iceD[7].position.x=357;
+    iceD[7].position.y=215;
+    iceD[8].position.x=376;
+    iceD[8].position.y=291;
+    iceD[9].position.x=210;
+    iceD[9].position.y=538;
+    iceD[10].position.x=856;
+    iceD[10].position.y=452;
+    iceD[11].position.x=296;
+    iceD[11].position.y=450;
+
+    iceB[0].position.x=950;
+    iceB[0].position.y=434;
+    iceB[1].position.x=251;
+    iceB[1].position.y=319;
+    iceB[2].position.x=773;
+    iceB[2].position.y=200;
+    iceB[3].position.x=888;
+    iceB[3].position.y=536;
+    iceB[4].position.x=286;
+    iceB[4].position.y=529;
+    iceB[5].position.x=541;
+    iceB[5].position.y=424;
+
+    //bottom
+    iceD[0].position.x=950;
+    iceD[0].position.y=444;
+    iceD[1].position.x=251;
+    iceD[1].position.y=329;
+    iceD[2].position.x=773;
+    iceD[2].position.y=210;
+    iceD[3].position.x=888;
+    iceD[3].position.y=546;
+    iceD[4].position.x=286;
+    iceD[4].position.y=539;
+    iceD[5].position.x=541;
+    iceD[5].position.y=434;
+   
+
+}
+next.position.x;
+next.position.y;
+    iceP2();
+    meltingIce();  
+    drawSprites();    
+// }  
+}
+    if(state==9){
+        background(loseScreen);
+        fill(0, 120, 255);
+        textSize(60);
+        text('GAMEOVER!', 320, 100);
+        textSize(25);
+        text("Don't give up! Press S or W to retry!", 300, 200)    
+    
+    iceP();
+
+    ice.position.x=150;
+    ice.position.y=200;
+//    ice.animation.looping=true;
+    //ice.removed=false;
      
+     
+     if (keyIsDown(87)||keyIsDown(83)) {
+        state = 8;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+   
+        // reset hearts back to 3
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        
+        resetIce();
+        
+        //state = 3;
+}        
+        
+}
+    if(state==10){
+        fill(0, 0, 25);
+        background(bg);
+        fill(255,255,255);
+        rect(862,18,100,50,20);
+        fill(0)
+        textSize(35);
+        textFont('Georgia');
+        text('EXIT',870,55);
+        textSize(50)
+        textFont('Georgia');
+        text('Level: 4',300,55);
+    
+        fill(255,255,255);
+        rect(578,18,180,50,20);
+        fill(0)
+        textSize(30);
+        text('Level Select',590,55)
+// px==150;
+// py==180;
+        gravity();
+  
+        bearP();
+        jumpObserver();
+
+    collision3();
+    function collision3() {
+   if(bear.collide(ice)){
+       py -= barrier;
+     //  ice.changeAnimation('melty')
+   }
+   if(bear.collide(ground)){
+       py -= 6;
+       heart -= 1;
+       respawn();
+       life3();
+       
+   }
+   if (bear.collide(next)) {
+       state = 12;
        heart = 3;
        heart1.visible = true;
        heart2.visible = true;
@@ -651,18 +1152,143 @@ function mouseClicked() {
                  iceD[i].removed = true//mouseIsPressed;
              }
              resetIce();
-             px=120;
+             px=150;
              py=25;
-    }
-    if(state==1 && mouseX>380 && mouseX<670&&mouseY>420&&mouseY<495){
-        state=2;
-    }
-    if(state==2&& mouseX>200 && mouseX<450&&mouseY>400&&mouseY<475){
-        state=3;
-        heart = 3;
-        heart1.visible = true;
-        heart2.visible = true;
-        heart3.visible = true;
+   }
+   if(bear.collide(iceT)){
+     //  py -= barrier;
+       //py+=6;
+   }
+   if(bear.collide(iceB)){
+     //  py -= barrier;
+       //py+=6;
+   }
+   // collision for iceD
+   if (bear.collide(iceD)) {
+      py += 20;
+   }
+
+   
+
+   
+}
+    function life3() {
+   if (heart == 0) {
+       heart1.visible = false;
+       // respawn
+       // state = losing state
+       state = 11;
+   }   
+   else if (heart == 2) {
+       heart3.visible = false;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+       resetIce()
+   }
+   else if (heart == 1) {
+       heart2.visible = false;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+       resetIce();
+   }
+}
+    function iceP3() {
+
+    iceT[0].position.x=486;
+    iceT[0].position.y=394;
+    iceT[1].position.x=427;
+    iceT[1].position.y=393;
+    iceT[2].position.x=516;
+    iceT[2].position.y=492;
+    iceT[3].position.x=862;
+    iceT[3].position.y=521;
+    iceT[4].position.x=805;
+    iceT[4].position.y=282;
+    iceT[5].position.x=889;
+    iceT[5].position.y=360;
+
+    //top 
+    iceD[6].position.x=486;
+    iceD[6].position.y=404;
+    iceD[7].position.x=427;
+    iceD[7].position.y=403;
+    iceD[8].position.x=516;
+    iceD[8].position.y=502;
+    iceD[9].position.x=862;
+    iceD[9].position.y=531;
+    iceD[10].position.x=805;
+    iceD[10].position.y=292;
+    iceD[11].position.x=889;
+    iceD[11].position.y=370;
+
+    iceB[0].position.x=282;
+    iceB[0].position.y=298;
+    iceB[1].position.x=330;
+    iceB[1].position.y=228;
+    iceB[2].position.x=766;
+    iceB[2].position.y=329;
+    iceB[3].position.x=481;
+    iceB[3].position.y=249;
+    iceB[4].position.x=684;
+    iceB[4].position.y=423;
+    iceB[5].position.x=713;
+    iceB[5].position.y=306;
+
+    //bottom
+    iceD[0].position.x=282;
+    iceD[0].position.y=308;
+    iceD[1].position.x=330;
+    iceD[1].position.y=238;
+    iceD[2].position.x=766;
+    iceD[2].position.y=339;
+    iceD[3].position.x=481;
+    iceD[3].position.y=259;
+    iceD[4].position.x=684;
+    iceD[4].position.y=433;
+    iceD[5].position.x=713;
+    iceD[5].position.y=316;
+    
+
+}
+next.position.x;
+next.position.y;
+iceP3();
+meltingIce();  
+drawSprites();    
+// }
+}
+    if(state==11){
+        background(loseScreen);
+        fill(0, 120, 255);
+        textSize(60);
+        text('GAMEOVER!', 320, 100);
+        textSize(25);
+        text("Don't give up! Press S or W to retry!", 300, 200)    
+    
+        iceP();
+
+        ice.position.x=150;
+        ice.position.y=200;
+//    ice.animation.looping=true;
+    //ice.removed=false;
+     
+     
+     if (keyIsDown(87)||keyIsDown(83)) {
+        state = 10;
         for(let i=0; i<6; i++){
             iceT[i].removed = true//mouseIsPressed;
             }
@@ -672,11 +1298,1399 @@ function mouseClicked() {
               for(let i=0; i<12; i++){
                   iceD[i].removed = true//mouseIsPressed;
               }
+   
+        // reset hearts back to 3
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        
         resetIce();
-        px=120;
-        py=25;
+        
+        //state = 3;
     }
-    if(state==2&& mouseX>550 && mouseX<800&&mouseY>400&&mouseY<475){
+}
+    if(state==12){
+        fill(0, 0, 25);
+        background(bg);
+        fill(255,255,255);
+        rect(862,18,100,50,20);
+        fill(0)
+        textSize(35);
+        textFont('Georgia');
+        text('EXIT',870,55);
+        textSize(50)
+        textFont('Georgia');
+        text('Level: 5',300,55);
+    
+        fill(255,255,255);
+        rect(578,18,180,50,20);
+        fill(0)
+        textSize(30);
+        text('Level Select',590,55)
+// px==150;
+// py==180;
+        gravity();
+  
+        bearP();
+        jumpObserver();
+
+    collision4();
+    function collision4() {
+   if(bear.collide(ice)){
+       py -= barrier;
+     //  ice.changeAnimation('melty')
+   }
+   if(bear.collide(ground)){
+       py -= 6;
+       heart -= 1;
+       respawn();
+       life4();
+       
+   }
+   if (bear.collide(next)) {
+       state = 14;
+       heart = 3;
+       heart1.visible = true;
+       heart2.visible = true;
+       heart3.visible = true;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+             resetIce();
+             px=150;
+             py=25;
+   }
+   if(bear.collide(iceT)){
+     //  py -= barrier;
+       //py+=6;
+   }
+   if(bear.collide(iceB)){
+     //  py -= barrier;
+       //py+=6;
+   }
+   // collision for iceD
+   if (bear.collide(iceD)) {
+      py += 20;
+   }
+
+   
+
+   
+}
+    function life4() {
+   if (heart == 0) {
+       heart1.visible = false;
+       // respawn
+       // state = losing state
+       state = 13;
+   }   
+   else if (heart == 2) {
+       heart3.visible = false;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+       resetIce()
+   }
+   else if (heart == 1) {
+       heart2.visible = false;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+       resetIce();
+   }
+}
+    function iceP4() {
+
+    iceT[0].position.x=815;
+    iceT[0].position.y=466;
+    iceT[1].position.x=856;
+    iceT[1].position.y=245;
+    iceT[2].position.x=623;
+    iceT[2].position.y=507;
+    iceT[3].position.x=450;
+    iceT[3].position.y=260;
+    iceT[4].position.x=369;
+    iceT[4].position.y=316;
+    iceT[5].position.x=719;
+    iceT[5].position.y=542;
+
+    //top 
+    iceD[6].position.x=815;
+    iceD[6].position.y=476;
+    iceD[7].position.x=856;
+    iceD[7].position.y=255;
+    iceD[8].position.x=623;
+    iceD[8].position.y=517;
+    iceD[9].position.x=450;
+    iceD[9].position.y=270;
+    iceD[10].position.x=369;
+    iceD[10].position.y=326;
+    iceD[11].position.x=719;
+    iceD[11].position.y=552;
+
+    iceB[0].position.x=877;
+    iceB[0].position.y=301;
+    iceB[1].position.x=491;
+    iceB[1].position.y=345;
+    iceB[2].position.x=752;
+    iceB[2].position.y=371;
+    iceB[3].position.x=515;
+    iceB[3].position.y=546;
+    iceB[4].position.x=678;
+    iceB[4].position.y=444;
+    iceB[5].position.x=424;
+    iceB[5].position.y=349;
+
+    //bottom
+    iceD[0].position.x=877;
+    iceD[0].position.y=311;
+    iceD[1].position.x=491;
+    iceD[1].position.y=355;
+    iceD[2].position.x=752;
+    iceD[2].position.y=381;
+    iceD[3].position.x=515;
+    iceD[3].position.y=556;
+    iceD[4].position.x=678;
+    iceD[4].position.y=454;
+    iceD[5].position.x=424;
+    iceD[5].position.y=359;
+    
+
+}
+next.position.x;
+next.position.y;
+iceP4();
+meltingIce();  
+drawSprites();    
+// }
+}
+    if(state==13){
+     background(loseScreen);
+        fill(0, 120, 255);
+        textSize(60);
+        text('GAMEOVER!', 320, 100);
+        textSize(25);
+        text("Don't give up! Press S or W to retry!", 300, 200)    
+        
+        iceP();
+    
+        ice.position.x=150;
+        ice.position.y=200;
+   //    ice.animation.looping=true;
+        //ice.removed=false;
+         
+         
+         if (keyIsDown(87)||keyIsDown(83)) {
+            state = 12;
+            for(let i=0; i<6; i++){
+                iceT[i].removed = true//mouseIsPressed;
+                }
+                for(let i=0; i<6; i++){
+                  iceB[i].removed = true//mouseIsPressed;
+                  }
+                  for(let i=0; i<12; i++){
+                      iceD[i].removed = true//mouseIsPressed;
+                  }
+       
+            // reset hearts back to 3
+            heart = 3;
+            heart1.visible = true;
+            heart2.visible = true;
+            heart3.visible = true;
+            
+            resetIce();
+            
+            //state = 3;
+            
+            
+        }    
+}
+    if(state==14){
+        fill(0, 0, 25);
+        background(bg);
+        fill(255,255,255);
+        rect(862,18,100,50,20);
+        fill(0)
+        textSize(35);
+        textFont('Georgia');
+        text('EXIT',870,55);
+        textSize(50)
+        textFont('Georgia');
+        text('Level: 6',300,55);
+    
+        fill(255,255,255);
+        rect(578,18,180,50,20);
+        fill(0)
+        textSize(30);
+        text('Level Select',590,55)
+// px==150;
+// py==180;
+        gravity();
+  
+        bearP();
+        jumpObserver();
+
+    collision5();
+    function collision5() {
+   if(bear.collide(ice)){
+       py -= barrier;
+     //  ice.changeAnimation('melty')
+   }
+   if(bear.collide(ground)){
+       py -= 6;
+       heart -= 1;
+       respawn();
+       life5();
+       
+   }
+   if (bear.collide(next)) {
+       state = 16;
+       heart = 3;
+       heart1.visible = true;
+       heart2.visible = true;
+       heart3.visible = true;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+             resetIce();
+             px=150;
+             py=25;
+   }
+   if(bear.collide(iceT)){
+     //  py -= barrier;
+       //py+=6;
+   }
+   if(bear.collide(iceB)){
+     //  py -= barrier;
+       //py+=6;
+   }
+   // collision for iceD
+   if (bear.collide(iceD)) {
+      py += 20;
+   }
+
+   
+
+   
+}
+    function life5() {
+   if (heart == 0) {
+       heart1.visible = false;
+       // respawn
+       // state = losing state
+       state = 15;
+   }   
+   else if (heart == 2) {
+       heart3.visible = false;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+       resetIce()
+   }
+   else if (heart == 1) {
+       heart2.visible = false;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+       resetIce();
+   }
+}
+    function iceP5() {
+
+    iceT[0].position.x=250;
+    iceT[0].position.y=550;
+    iceT[1].position.x=458;
+    iceT[1].position.y=435;
+    iceT[2].position.x=446;
+    iceT[2].position.y=511;
+    iceT[3].position.x=884;
+    iceT[3].position.y=290;
+    iceT[4].position.x=460;
+    iceT[4].position.y=529;
+    iceT[5].position.x=347;
+    iceT[5].position.y=273;
+
+    //top 
+    iceD[6].position.x=250;
+    iceD[6].position.y=560;
+    iceD[7].position.x=458;
+    iceD[7].position.y=445;
+    iceD[8].position.x=446;
+    iceD[8].position.y=521;
+    iceD[9].position.x=884;
+    iceD[9].position.y=300;
+    iceD[10].position.x=460;
+    iceD[10].position.y=539;
+    iceD[11].position.x=347;
+    iceD[11].position.y=283;
+
+    iceB[0].position.x=609;
+    iceB[0].position.y=449;
+    iceB[1].position.x=671;
+    iceB[1].position.y=491;
+    iceB[2].position.x=373;
+    iceB[2].position.y=379;
+    iceB[3].position.x=832;
+    iceB[3].position.y=246;
+    iceB[4].position.x=613;
+    iceB[4].position.y=517;
+    iceB[5].position.x=534;
+    iceB[5].position.y=382;
+
+    //bottom
+    iceD[0].position.x=609;
+    iceD[0].position.y=459;
+    iceD[1].position.x=671;
+    iceD[1].position.y=501;
+    iceD[2].position.x=373;
+    iceD[2].position.y=389;
+    iceD[3].position.x=832;
+    iceD[3].position.y=256;
+    iceD[4].position.x=613;
+    iceD[4].position.y=527;
+    iceD[5].position.x=534;
+    iceD[5].position.y=392;
+
+    
+
+}
+next.position.x;
+next.position.y;
+iceP5();
+meltingIce();  
+drawSprites();    
+// }    
+}
+    if(state==15){
+        background(loseScreen);
+        fill(0, 120, 255);
+        textSize(60);
+        text('GAMEOVER!', 320, 100);
+        textSize(25);
+        text("Don't give up! Press S or W to retry!", 300, 200)    
+        
+        iceP();
+    
+        ice.position.x=150;
+        ice.position.y=200;
+   //    ice.animation.looping=true;
+        //ice.removed=false;
+         
+         
+         if (keyIsDown(87)||keyIsDown(83)) {
+            state = 14;
+            for(let i=0; i<6; i++){
+                iceT[i].removed = true//mouseIsPressed;
+                }
+                for(let i=0; i<6; i++){
+                  iceB[i].removed = true//mouseIsPressed;
+                  }
+                  for(let i=0; i<12; i++){
+                      iceD[i].removed = true//mouseIsPressed;
+                  }
+       
+            // reset hearts back to 3
+            heart = 3;
+            heart1.visible = true;
+            heart2.visible = true;
+            heart3.visible = true;
+            
+            resetIce();
+            
+            //state = 3;
+            
+            
+        }   
+}
+    if(state==16){
+        fill(0, 0, 25);
+        background(bg);
+        fill(255,255,255);
+        rect(862,18,100,50,20);
+        fill(0)
+        textSize(35);
+        textFont('Georgia');
+        text('EXIT',870,55);
+        textSize(50)
+        textFont('Georgia');
+        text('Level: 7',300,55);
+    
+        fill(255,255,255);
+        rect(578,18,180,50,20);
+        fill(0)
+        textSize(30);
+        text('Level Select',590,55)
+// px==150;
+// py==180;
+        gravity();
+  
+        bearP();
+        jumpObserver();
+
+    collision6();
+    function collision6() {
+   if(bear.collide(ice)){
+       py -= barrier;
+     //  ice.changeAnimation('melty')
+   }
+   if(bear.collide(ground)){
+       py -= 6;
+       heart -= 1;
+       respawn();
+       life6();
+       
+   }
+   if (bear.collide(next)) {
+       state = 18;
+       heart = 3;
+       heart1.visible = true;
+       heart2.visible = true;
+       heart3.visible = true;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+             resetIce();
+             px=150;
+             py=25;
+   }
+   if(bear.collide(iceT)){
+     //  py -= barrier;
+       //py+=6;
+   }
+   if(bear.collide(iceB)){
+     //  py -= barrier;
+       //py+=6;
+   }
+   // collision for iceD
+   if (bear.collide(iceD)) {
+      py += 20;
+   }
+
+   
+
+   
+}
+    function life6() {
+   if (heart == 0) {
+       heart1.visible = false;
+       // respawn
+       // state = losing state
+       state = 17;
+   }   
+   else if (heart == 2) {
+       heart3.visible = false;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+       resetIce()
+   }
+   else if (heart == 1) {
+       heart2.visible = false;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+       resetIce();
+   }
+}
+    function iceP6() {
+
+    iceT[0].position.x=575;
+    iceT[0].position.y=258;
+    iceT[1].position.x=647;
+    iceT[1].position.y=472;
+    iceT[2].position.x=287;
+    iceT[2].position.y=267;
+    iceT[3].position.x=338;
+    iceT[3].position.y=386;
+    iceT[4].position.x=400;
+    iceT[4].position.y=543;
+    iceT[5].position.x=837;
+    iceT[5].position.y=273;
+
+    //top 
+    iceD[6].position.x=575;
+    iceD[6].position.y=268;
+    iceD[7].position.x=647;
+    iceD[7].position.y=482;
+    iceD[8].position.x=287;
+    iceD[8].position.y=277;
+    iceD[9].position.x=338;
+    iceD[9].position.y=396;
+    iceD[10].position.x=400;
+    iceD[10].position.y=553;
+    iceD[11].position.x=837;
+    iceD[11].position.y=283;
+
+    iceB[0].position.x=893;
+    iceB[0].position.y=218;
+    iceB[1].position.x=418;
+    iceB[1].position.y=476;
+    iceB[2].position.x=420;
+    iceB[2].position.y=232;
+    iceB[3].position.x=525;
+    iceB[3].position.y=386;
+    iceB[4].position.x=585;
+    iceB[4].position.y=291;
+    iceB[5].position.x=861;
+    iceB[5].position.y=209;
+
+    //bottom
+    iceD[0].position.x=893;
+    iceD[0].position.y=228;
+    iceD[1].position.x=418;
+    iceD[1].position.y=486;
+    iceD[2].position.x=420;
+    iceD[2].position.y=242;
+    iceD[3].position.x=525;
+    iceD[3].position.y=396;
+    iceD[4].position.x=585;
+    iceD[4].position.y=301;
+    iceD[5].position.x=861;
+    iceD[5].position.y=219;
+    
+
+}
+next.position.x;
+next.position.y;
+iceP6();
+meltingIce();  
+drawSprites();    
+// }     
+}
+    if(state==17){
+        background(loseScreen);
+        fill(0, 120, 255);
+        textSize(60);
+        text('GAMEOVER!', 320, 100);
+        textSize(25);
+        text("Don't give up! Press S or W to retry!", 300, 200)    
+        
+        iceP();
+    
+        ice.position.x=150;
+        ice.position.y=200;
+   //    ice.animation.looping=true;
+        //ice.removed=false;
+         
+         
+         if (keyIsDown(87)||keyIsDown(83)) {
+            state = 16;
+            for(let i=0; i<6; i++){
+                iceT[i].removed = true//mouseIsPressed;
+                }
+                for(let i=0; i<6; i++){
+                  iceB[i].removed = true//mouseIsPressed;
+                  }
+                  for(let i=0; i<12; i++){
+                      iceD[i].removed = true//mouseIsPressed;
+                  }
+       
+            // reset hearts back to 3
+            heart = 3;
+            heart1.visible = true;
+            heart2.visible = true;
+            heart3.visible = true;
+            
+            resetIce();
+            
+            //state = 3;
+            
+            
+        }  
+}
+    if(state==18){
+        fill(0, 0, 25);
+        background(bg);
+        fill(255,255,255);
+        rect(862,18,100,50,20);
+        fill(0)
+        textSize(35);
+        textFont('Georgia');
+        text('EXIT',870,55);
+        textSize(50)
+        textFont('Georgia');
+        text('Level: 8',300,55);
+    
+        fill(255,255,255);
+        rect(578,18,180,50,20);
+        fill(0)
+        textSize(30);
+        text('Level Select',590,55)
+// px==150;
+// py==180;
+        gravity();
+  
+        bearP();
+        jumpObserver();
+
+    collision7();
+    function collision7() {
+   if(bear.collide(ice)){
+       py -= barrier;
+     //  ice.changeAnimation('melty')
+   }
+   if(bear.collide(ground)){
+       py -= 6;
+       heart -= 1;
+       respawn();
+       life7();
+       
+   }
+   if (bear.collide(next)) {
+       state = 20;
+       heart = 3;
+       heart1.visible = true;
+       heart2.visible = true;
+       heart3.visible = true;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+             resetIce();
+             px=150;
+             py=25;
+   }
+   if(bear.collide(iceT)){
+     //  py -= barrier;
+       //py+=6;
+   }
+   if(bear.collide(iceB)){
+     //  py -= barrier;
+       //py+=6;
+   }
+   // collision for iceD
+   if (bear.collide(iceD)) {
+      py += 20;
+   }
+
+   
+
+   
+}
+    function life7() {
+   if (heart == 0) {
+       heart1.visible = false;
+       // respawn
+       // state = losing state
+       state = 19;
+   }   
+   else if (heart == 2) {
+       heart3.visible = false;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+       resetIce()
+   }
+   else if (heart == 1) {
+       heart2.visible = false;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+       resetIce();
+   }
+}
+    function iceP7() {
+
+    iceT[0].position.x=643;
+    iceT[0].position.y=266;
+    iceT[1].position.x=823;
+    iceT[1].position.y=404;
+    iceT[2].position.x=844;
+    iceT[2].position.y=385;
+    iceT[3].position.x=771;
+    iceT[3].position.y=295;
+    iceT[4].position.x=525;
+    iceT[4].position.y=526;
+    iceT[5].position.x=610;
+    iceT[5].position.y=444;
+
+    //top 
+    iceD[6].position.x=643;
+    iceD[6].position.y=276;
+    iceD[7].position.x=823;
+    iceD[7].position.y=414;
+    iceD[8].position.x=844;
+    iceD[8].position.y=395;
+    iceD[9].position.x=771;
+    iceD[9].position.y=305;
+    iceD[10].position.x=525;
+    iceD[10].position.y=536;
+    iceD[11].position.x=610;
+    iceD[11].position.y=454;
+
+    iceB[0].position.x=840;
+    iceB[0].position.y=494;
+    iceB[1].position.x=638;
+    iceB[1].position.y=275;
+    iceB[2].position.x=272;
+    iceB[2].position.y=246;
+    iceB[3].position.x=722;
+    iceB[3].position.y=496;
+    iceB[4].position.x=939;
+    iceB[4].position.y=501;
+    iceB[5].position.x=307;
+    iceB[5].position.y=243;
+
+    //bottom
+    iceD[0].position.x=840;
+    iceD[0].position.y=504;
+    iceD[1].position.x=638;
+    iceD[1].position.y=285;
+    iceD[2].position.x=272;
+    iceD[2].position.y=256;
+    iceD[3].position.x=722;
+    iceD[3].position.y=506;
+    iceD[4].position.x=939;
+    iceD[4].position.y=511;
+    iceD[5].position.x=307;
+    iceD[5].position.y=253;
+    
+
+}
+next.position.x;
+next.position.y;
+iceP7();
+meltingIce();  
+drawSprites();    
+// }       
+}
+    if(state==19){
+        background(loseScreen);
+        fill(0, 120, 255);
+        textSize(60);
+        text('GAMEOVER!', 320, 100);
+        textSize(25);
+        text("Don't give up! Press S or W to retry!", 300, 200)    
+        
+        iceP();
+    
+        ice.position.x=150;
+        ice.position.y=200;
+   //    ice.animation.looping=true;
+        //ice.removed=false;
+         
+         
+         if (keyIsDown(87)||keyIsDown(83)) {
+            state = 18;
+            for(let i=0; i<6; i++){
+                iceT[i].removed = true//mouseIsPressed;
+                }
+                for(let i=0; i<6; i++){
+                  iceB[i].removed = true//mouseIsPressed;
+                  }
+                  for(let i=0; i<12; i++){
+                      iceD[i].removed = true//mouseIsPressed;
+                  }
+       
+            // reset hearts back to 3
+            heart = 3;
+            heart1.visible = true;
+            heart2.visible = true;
+            heart3.visible = true;
+            
+            resetIce();
+            
+            //state = 3;
+            
+            
+        }  
+}
+    if(state==20){
+        fill(0, 0, 25);
+        background(bg);
+        fill(255,255,255);
+        rect(862,18,100,50,20);
+        fill(0)
+        textSize(35);
+        textFont('Georgia');
+        text('EXIT',870,55);
+        textSize(50)
+        textFont('Georgia');
+        text('Level: 9',300,55);
+    
+        fill(255,255,255);
+        rect(578,18,180,50,20);
+        fill(0)
+        textSize(30);
+        text('Level Select',590,55)
+// px==150;
+// py==180;
+        gravity();
+  
+        bearP();
+        jumpObserver();
+
+    collision8();
+    function collision8() {
+   if(bear.collide(ice)){
+       py -= barrier;
+     //  ice.changeAnimation('melty')
+   }
+   if(bear.collide(ground)){
+       py -= 6;
+       heart -= 1;
+       respawn();
+       life8();
+       
+   }
+   if (bear.collide(next)) {
+       state = 22;
+       heart = 3;
+       heart1.visible = true;
+       heart2.visible = true;
+       heart3.visible = true;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+             resetIce();
+             px=150;
+             py=25;
+   }
+   if(bear.collide(iceT)){
+     //  py -= barrier;
+       //py+=6;
+   }
+   if(bear.collide(iceB)){
+     //  py -= barrier;
+       //py+=6;
+   }
+   // collision for iceD
+   if (bear.collide(iceD)) {
+      py += 20;
+   }
+
+   
+
+   
+}
+    function life8() {
+   if (heart == 0) {
+       heart1.visible = false;
+       // respawn
+       // state = losing state
+       state = 21;
+   }   
+   else if (heart == 2) {
+       heart3.visible = false;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+       resetIce()
+   }
+   else if (heart == 1) {
+       heart2.visible = false;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+       resetIce();
+   }
+}
+    function iceP8() {
+
+    iceT[0].position.x=447;
+    iceT[0].position.y=342;
+    iceT[1].position.x=803;
+    iceT[1].position.y=520;
+    iceT[2].position.x=277;
+    iceT[2].position.y=224;
+    iceT[3].position.x=509;
+    iceT[3].position.y=403;
+    iceT[4].position.x=946;
+    iceT[4].position.y=374;
+    iceT[5].position.x=331;
+    iceT[5].position.y=544;
+
+    //top 
+    iceD[6].position.x=447;
+    iceD[6].position.y=352;
+    iceD[7].position.x=803;
+    iceD[7].position.y=530;
+    iceD[8].position.x=277;
+    iceD[8].position.y=234;
+    iceD[9].position.x=509;
+    iceD[9].position.y=413;
+    iceD[10].position.x=946;
+    iceD[10].position.y=384;
+    iceD[11].position.x=331;
+    iceD[11].position.y=554;
+
+    iceB[0].position.x=629;
+    iceB[0].position.y=237;
+    iceB[1].position.x=939;
+    iceB[1].position.y=252;
+    iceB[2].position.x=433;
+    iceB[2].position.y=549;
+    iceB[3].position.x=674;
+    iceB[3].position.y=449;
+    iceB[4].position.x=478;
+    iceB[4].position.y=221;
+    iceB[5].position.x=492;
+    iceB[5].position.y=523;
+
+    //bottom
+    iceD[0].position.x=629;
+    iceD[0].position.y=247;
+    iceD[1].position.x=939;
+    iceD[1].position.y=262;
+    iceD[2].position.x=433;
+    iceD[2].position.y=559;
+    iceD[3].position.x=674;
+    iceD[3].position.y=459;
+    iceD[4].position.x=478;
+    iceD[4].position.y=231;
+    iceD[5].position.x=492;
+    iceD[5].position.y=533;
+    
+
+}
+next.position.x;
+next.position.y;
+iceP8();
+meltingIce();  
+drawSprites();    
+// }           
+}
+    if(state==21){
+        background(loseScreen);
+        fill(0, 120, 255);
+        textSize(60);
+        text('GAMEOVER!', 320, 100);
+        textSize(25);
+        text("Don't give up! Press S or W to retry!", 300, 200)    
+        
+        iceP();
+    
+        ice.position.x=150;
+        ice.position.y=200;
+   //    ice.animation.looping=true;
+        //ice.removed=false;
+         
+         
+         if (keyIsDown(87)||keyIsDown(83)) {
+            state = 20;
+            for(let i=0; i<6; i++){
+                iceT[i].removed = true//mouseIsPressed;
+                }
+                for(let i=0; i<6; i++){
+                  iceB[i].removed = true//mouseIsPressed;
+                  }
+                  for(let i=0; i<12; i++){
+                      iceD[i].removed = true//mouseIsPressed;
+                  }
+       
+            // reset hearts back to 3
+            heart = 3;
+            heart1.visible = true;
+            heart2.visible = true;
+            heart3.visible = true;
+            
+            resetIce();
+            
+            //state = 3;
+            
+            
+        }   
+}
+    if(state==22){
+        fill(0, 0, 25);
+        background(bg);
+        fill(255,255,255);
+        rect(862,18,100,50,20);
+        fill(0)
+        textSize(35);
+        textFont('Georgia');
+        text('EXIT',870,55);
+        textSize(50)
+        textFont('Georgia');
+        text('Level: 10',290,55);
+    
+        fill(255,255,255);
+        rect(578,18,180,50,20);
+        fill(0)
+        textSize(30);
+        text('Level Select',590,55)
+// px==150;
+// py==180;
+        gravity();
+  
+        bearP();
+        jumpObserver();
+
+    collision9();
+    function collision9() {
+   if(bear.collide(ice)){
+       py -= barrier;
+     //  ice.changeAnimation('melty')
+   }
+   if(bear.collide(ground)){
+       py -= 6;
+       heart -= 1;
+       respawn();
+       life9();
+       
+   }
+   if (bear.collide(next)) {
+       state = 5;
+       heart = 3;
+       heart1.visible = true;
+       heart2.visible = true;
+       heart3.visible = true;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+             resetIce();
+             px=150;
+             py=25;
+   }
+   if(bear.collide(iceT)){
+     //  py -= barrier;
+       //py+=6;
+   }
+   if(bear.collide(iceB)){
+     //  py -= barrier;
+       //py+=6;
+   }
+   // collision for iceD
+   if (bear.collide(iceD)) {
+      py += 20;
+   }
+
+   
+
+   
+}
+    function life9() {
+   if (heart == 0) {
+       heart1.visible = false;
+       // respawn
+       // state = losing state
+       state = 23;
+   }   
+   else if (heart == 2) {
+       heart3.visible = false;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+       resetIce()
+   }
+   else if (heart == 1) {
+       heart2.visible = false;
+       for(let i=0; i<6; i++){
+           iceT[i].removed = true//mouseIsPressed;
+           }
+           for(let i=0; i<6; i++){
+             iceB[i].removed = true//mouseIsPressed;
+             }
+             for(let i=0; i<12; i++){
+                 iceD[i].removed = true//mouseIsPressed;
+             }
+       resetIce();
+   }
+}
+    function iceP9() {
+
+    iceT[0].position.x=620;
+    iceT[0].position.y=507;
+    iceT[1].position.x=556;
+    iceT[1].position.y=403;
+    iceT[2].position.x=517;
+    iceT[2].position.y=322;
+    iceT[3].position.x=844;
+    iceT[3].position.y=222;
+    iceT[4].position.x=303;
+    iceT[4].position.y=470;
+    iceT[5].position.x=750;
+    iceT[5].position.y=546;
+
+    //top 
+    iceD[6].position.x=620;
+    iceD[6].position.y=517;
+    iceD[7].position.x=556;
+    iceD[7].position.y=413;
+    iceD[8].position.x=517;
+    iceD[8].position.y=332;
+    iceD[9].position.x=844;
+    iceD[9].position.y=232;
+    iceD[10].position.x=303;
+    iceD[10].position.y=480;
+    iceD[11].position.x=750;
+    iceD[11].position.y=556;
+
+    iceB[0].position.x=674;
+    iceB[0].position.y=391;
+    iceB[1].position.x=530;
+    iceB[1].position.y=261;
+    iceB[2].position.x=254;
+    iceB[2].position.y=333;
+    iceB[3].position.x=687;
+    iceB[3].position.y=341;
+    iceB[4].position.x=531;
+    iceB[4].position.y=327;
+    iceB[5].position.x=390;
+    iceB[5].position.y=401;
+
+    //bottom
+    iceD[0].position.x=674;
+    iceD[0].position.y=401;
+    iceD[1].position.x=530;
+    iceD[1].position.y=271;
+    iceD[2].position.x=254;
+    iceD[2].position.y=343;
+    iceD[3].position.x=687;
+    iceD[3].position.y=351;
+    iceD[4].position.x=531;
+    iceD[4].position.y=337;
+    iceD[5].position.x=390;
+    iceD[5].position.y=411;
+    
+
+}
+next.position.x;
+next.position.y;
+iceP9();
+meltingIce();  
+drawSprites();    
+// }                
+}
+    if(state==23){
+        background(loseScreen);
+        fill(0, 120, 255);
+        textSize(60);
+        text('GAMEOVER!', 320, 100);
+        textSize(25);
+        text("Don't give up! Press S or W to retry!", 300, 200)    
+        
+        iceP();
+    
+        ice.position.x=150;
+        ice.position.y=200;
+   //    ice.animation.looping=true;
+        //ice.removed=false;
+         
+         
+         if (keyIsDown(87)||keyIsDown(83)) {
+            state = 22;
+            for(let i=0; i<6; i++){
+                iceT[i].removed = true//mouseIsPressed;
+                }
+                for(let i=0; i<6; i++){
+                  iceB[i].removed = true//mouseIsPressed;
+                  }
+                  for(let i=0; i<12; i++){
+                      iceD[i].removed = true//mouseIsPressed;
+                  }
+       
+            // reset hearts back to 3
+            heart = 3;
+            heart1.visible = true;
+            heart2.visible = true;
+            heart3.visible = true;
+            
+            resetIce();
+            
+            //state = 3;
+            
+            
+        }
+}
+    if(state==24){
+        fill(0, 0, 25);
+        background(bg);
+        fill(255,255,255);
+        rect(862,18,100,50,20);
+        fill(0)
+        textSize(35);
+        textFont('Georgia');
+        text('EXIT',870,55);
+        textSize(50)
+        textFont('Georgia');
+        text('LEVELS SELECT',320,55);
+        textSize(30)
+        
+        rect(80,170,150,50,20);
+
+        rect(310,170,150,50,20);
+       
+        rect(540,170,150,50,20);
+        
+        rect(770,170,150,50,20);
+    
+        rect(80,290,150,50,20);
+      
+        rect(310,290,150,50,20);
+    
+        rect(540,290,150,50,20);
+        
+        rect(770,290,150,50,20);
+        rect(250,410,150,50,20);
+        rect(600,410,150,50,20);
+        fill(255,255,255);
+        text('level: 1',110,205);
+        text('level: 2',340,205);
+        text('level: 3',570,205);
+        text('level: 4',800,205);
+        text('level: 5',110,325);
+        text('level: 6',340,325);
+        text('level: 7',570,325);
+        text('level: 8',800,325);
+        text('level: 9',280,445);
+        text('level: 10',620,445);
+     
+    }
+
+}
+
+
+
+
+
+function mouseClicked() {
+    if (state==1 && mouseX>380 && mouseX<670 && mouseY>300 && mouseY<375) {
+       state=24;
+      
+     
+    //    heart = 3;
+    //    heart1.visible = true;
+    //    heart2.visible = true;
+    //    heart3.visible = true;
+    //    for(let i=0; i<6; i++){
+    //        iceT[i].removed = true//mouseIsPressed;
+    //        }
+    //        for(let i=0; i<6; i++){
+    //          iceB[i].removed = true//mouseIsPressed;
+    //          }
+    //          for(let i=0; i<12; i++){
+    //              iceD[i].removed = true//mouseIsPressed;
+    //          }
+    //          resetIce();
+    //          px=150;
+    //          py=25;
+    }
+    if(state==1 && mouseX>380 && mouseX<670&&mouseY>420&&mouseY<495){
+        state=2;
+    }
+    if(state==2&& mouseX>200 && mouseX<450&&mouseY>500&&mouseY<575){
+        state=24;
+        // heart = 3;
+        // heart1.visible = true;
+        // heart2.visible = true;
+        // heart3.visible = true;
+        // for(let i=0; i<6; i++){
+        //     iceT[i].removed = true//mouseIsPressed;
+        //     }
+        //     for(let i=0; i<6; i++){
+        //       iceB[i].removed = true//mouseIsPressed;
+        //       }
+        //       for(let i=0; i<12; i++){
+        //           iceD[i].removed = true//mouseIsPressed;
+        //       }
+        // resetIce();
+        // px=120;
+        // py=25;
+    }
+    if(state==2&& mouseX>550 && mouseX<800&&mouseY>500&&mouseY<575){
         state=1;
     }
     if (state == 4) {
@@ -700,6 +2714,553 @@ function mouseClicked() {
         resetIce();
         respawn();
     }
+    if(state==6&&mouseX>862&&mouseX<962&&mouseY>18&&mouseY<68){
+        state=1;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==8&&mouseX>862&&mouseX<962&&mouseY>18&&mouseY<68){
+        state=1;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==10&&mouseX>862&&mouseX<962&&mouseY>18&&mouseY<68){
+        state=1;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==12&&mouseX>862&&mouseX<962&&mouseY>18&&mouseY<68){
+        state=1;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==14&&mouseX>862&&mouseX<962&&mouseY>18&&mouseY<68){
+        state=1;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==16&&mouseX>862&&mouseX<962&&mouseY>18&&mouseY<68){
+        state=1;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==18&&mouseX>862&&mouseX<962&&mouseY>18&&mouseY<68){
+        state=1;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==20&&mouseX>862&&mouseX<962&&mouseY>18&&mouseY<68){
+        state=1;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==22&&mouseX>862&&mouseX<962&&mouseY>18&&mouseY<68){
+        state=1;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==3&&mouseX>578&&mouseX<758&&mouseY>18&&mouseY<68){
+        state=24;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==6&&mouseX>578&&mouseX<758&&mouseY>18&&mouseY<68){
+        state=24;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==8&&mouseX>578&&mouseX<758&&mouseY>18&&mouseY<68){
+        state=24;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==10&&mouseX>578&&mouseX<758&&mouseY>18&&mouseY<68){
+        state=24;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==12&&mouseX>578&&mouseX<758&&mouseY>18&&mouseY<68){
+        state=24;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==14&&mouseX>578&&mouseX<758&&mouseY>18&&mouseY<68){
+        state=24;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==16&&mouseX>578&&mouseX<758&&mouseY>18&&mouseY<68){
+        state=24;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==18&&mouseX>578&&mouseX<758&&mouseY>18&&mouseY<68){
+        state=24;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==20&&mouseX>578&&mouseX<758&&mouseY>18&&mouseY<68){
+        state=24;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==22&&mouseX>578&&mouseX<758&&mouseY>18&&mouseY<68){
+        state=24;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==24&&mouseX>862&&mouseX<962&&mouseY>18&&mouseY<68){
+        state=1;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+
+
+
+
+
+
+    if(state==24&&mouseX>80&&mouseX<230&&mouseY>170&&mouseY<220){
+        state=3;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==24&&mouseX>310&&mouseX<460&&mouseY>170&&mouseY<220){
+        state=6;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==24&&mouseX>540&&mouseX<690&&mouseY>170&&mouseY<220){
+        state=8;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==24&&mouseX>770&&mouseX<920&&mouseY>170&&mouseY<220){
+        state=10;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==24&&mouseX>80&&mouseX<230&&mouseY>290&&mouseY<340){
+        state=12;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==24&&mouseX>310&&mouseX<460&&mouseY>290&&mouseY<340){
+        state=14;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==24&&mouseX>540&&mouseX<690&&mouseY>290&&mouseY<340){
+        state=16;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==24&&mouseX>770&&mouseX<920&&mouseY>290&&mouseY<340){
+        state=18;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==24&&mouseX>250&&mouseX<400&&mouseY>410&&mouseY<460){
+        state=20;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+    if(state==24&&mouseX>600&&mouseX<750&&mouseY>410&&mouseY<460){
+        state=22;
+        heart = 3;
+        heart1.visible = true;
+        heart2.visible = true;
+        heart3.visible = true;
+        for(let i=0; i<6; i++){
+            iceT[i].removed = true//mouseIsPressed;
+            }
+            for(let i=0; i<6; i++){
+              iceB[i].removed = true//mouseIsPressed;
+              }
+              for(let i=0; i<12; i++){
+                  iceD[i].removed = true//mouseIsPressed;
+              }
+        resetIce();
+        respawn();
+    }
+   
 }
 
 function resetIce(){
