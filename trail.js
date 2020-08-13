@@ -34,9 +34,8 @@ function preload() {
 }
 
 function setup() {
-  // const canvas=
-    createCanvas(1000, 600);
-   //canvas.parent('gameImage');
+ const canvas=createCanvas(1000, 600);
+   canvas.parent('gameImage');
     resetSketch();
     noStroke();
              
